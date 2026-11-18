@@ -1,0 +1,102 @@
+{
+  "versao": "cartao-1",
+  "abertura": [
+    {
+      "id": "abertura_pausa",
+      "focos": ["rotina", "humor", "descanso"],
+      "coberturas": ["zero", "uma", "parcial", "completa"],
+      "texto": "Você pode reservar um momento para olhar sua rotina."
+    },
+    {
+      "id": "abertura_observar",
+      "focos": ["rotina", "humor", "descanso"],
+      "coberturas": ["zero", "uma", "parcial", "completa"],
+      "texto": "Você pode começar pelo que mais chamou sua atenção."
+    }
+  ],
+  "pergunta": [
+    {
+      "id": "pergunta_inicio",
+      "focos": ["rotina", "humor", "descanso"],
+      "coberturas": ["zero"],
+      "texto": "O que você gostaria de lembrar sobre a próxima noite?"
+    },
+    {
+      "id": "pergunta_primeira_impressao",
+      "focos": ["rotina", "humor", "descanso"],
+      "coberturas": ["zero"],
+      "texto": "Que detalhe você gostaria de observar quando acordar?"
+    },
+    {
+      "id": "pergunta_rotina_horarios",
+      "focos": ["rotina"],
+      "coberturas": ["uma", "parcial", "completa"],
+      "texto": "O que chamou sua atenção nos horários que você registrou?"
+    },
+    {
+      "id": "pergunta_rotina_contexto",
+      "focos": ["rotina"],
+      "coberturas": ["uma", "parcial", "completa"],
+      "texto": "O que você lembra do período entre terminar suas atividades e se deitar?"
+    },
+    {
+      "id": "pergunta_humor_ao_acordar",
+      "focos": ["humor"],
+      "coberturas": ["uma", "parcial", "completa"],
+      "texto": "Como você se lembra de ter se sentido ao acordar?"
+    },
+    {
+      "id": "pergunta_humor_palavras",
+      "focos": ["humor"],
+      "coberturas": ["uma", "parcial", "completa"],
+      "texto": "Que palavras você usaria para descrever seu humor ao começar o dia?"
+    },
+    {
+      "id": "pergunta_descanso_impressao",
+      "focos": ["descanso"],
+      "coberturas": ["uma", "parcial", "completa"],
+      "texto": "O que ficou na sua memória sobre a sensação de descanso?"
+    },
+    {
+      "id": "pergunta_descanso_amanhecer",
+      "focos": ["descanso"],
+      "coberturas": ["uma", "parcial", "completa"],
+      "texto": "Qual detalhe você lembra dos primeiros momentos depois de acordar?"
+    },
+    {
+      "id": "pergunta_cafeina",
+      "focos": ["rotina", "humor", "descanso"],
+      "coberturas": ["parcial", "completa"],
+      "fator": "cafeina",
+      "texto": "O que você lembra das noites em que marcou cafeína?"
+    },
+    {
+      "id": "pergunta_telas",
+      "focos": ["rotina", "humor", "descanso"],
+      "coberturas": ["parcial", "completa"],
+      "fator": "telas",
+      "texto": "O que você lembra das noites em que marcou uso de telas?"
+    },
+    {
+      "id": "pergunta_ansiedade",
+      "focos": ["rotina", "humor", "descanso"],
+      "coberturas": ["parcial", "completa"],
+      "fator": "ansiedade",
+      "texto": "O que você lembra das noites em que marcou ansiedade?"
+    }
+  ],
+  "fecho": [
+    {
+      "id": "fecho_livre",
+      "focos": ["rotina", "humor", "descanso"],
+      "coberturas": ["zero", "uma", "parcial", "completa"],
+      "texto": "Se preferir, deixe essa reflexão para outro dia."
+    },
+    {
+      "id": "fecho_tempo",
+      "focos": ["rotina", "humor", "descanso"],
+      "coberturas": ["zero", "uma", "parcial", "completa"],
+      "texto": "Você pode voltar a essa pergunta quando tiver vontade."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "type": "object",
+  "properties": {
+    "abertura": {
+      "type": "string",
+      "description": "ID de um fragmento de abertura compatível com o contexto.",
+      "enum": ["abertura_pausa", "abertura_observar"]
+    },
+    "pergunta": {
+      "type": "string",
+      "description": "ID de uma pergunta compatível com o foco, a cobertura e o fator disponível.",
+      "enum": [
+        "pergunta_inicio",
+        "pergunta_primeira_impressao",
+        "pergunta_rotina_horarios",
+        "pergunta_rotina_contexto",
+        "pergunta_humor_ao_acordar",
+        "pergunta_humor_palavras",
+        "pergunta_descanso_impressao",
+        "pergunta_descanso_amanhecer",
+        "pergunta_cafeina",
+        "pergunta_telas",
+        "pergunta_ansiedade"
+      ]
+    },
+    "fecho": {
+      "type": "string",
+      "description": "ID de um fragmento de fecho compatível com o contexto.",
+      "enum": ["fecho_livre", "fecho_tempo"]
+    }
+  },
+  "required": ["abertura", "pergunta", "fecho"],
+  "additionalProperties": false
+}

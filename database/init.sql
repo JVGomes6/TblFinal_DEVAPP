@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
   termo_versao TEXT,
   aceite_em BIGINT,
   revogado_em BIGINT,
+  consentimento_versao INTEGER NOT NULL DEFAULT 0 CHECK (consentimento_versao >= 0),
   sessao_versao INTEGER NOT NULL DEFAULT 1 CHECK (sessao_versao >= 1),
   destaque TEXT NOT NULL DEFAULT 'duracao' CHECK (destaque IN ('duracao', 'humor')),
   meta_min INTEGER CHECK (meta_min BETWEEN 0 AND 1439),

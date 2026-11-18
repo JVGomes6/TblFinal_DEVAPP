@@ -1,0 +1,20 @@
+{
+  "expo": {
+    "name": "EntreNoites",
+    "slug": "entrenoites",
+    "version": "1.0.0",
+    "scheme": "entrenoites",
+    "platforms": ["android", "ios"],
+    "orientation": "default",
+    "userInterfaceStyle": "automatic",
+    "android": {
+      "package": "br.edu.appsono.entrenoites",
+      "versionCode": 1
+    },
+    "ios": {
+      "bundleIdentifier": "br.edu.appsono.entrenoites",
+      "supportsTablet": true
+    },
+    "plugins": ["expo-dev-client", "expo-secure-store"]
+  }
+}

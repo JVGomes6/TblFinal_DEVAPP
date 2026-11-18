@@ -1,0 +1,16 @@
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { AuthProvider } from './src/context/AuthContext';
+import { PreferencesProvider } from './src/context/PreferencesContext';
+import { RootNavigator } from './src/navigation/RootNavigator';
+
+export default function App() {
+  return (
+    <SafeAreaProvider>
+      <AuthProvider>
+        <PreferencesProvider>
+          <RootNavigator />
+        </PreferencesProvider>
+      </AuthProvider>
+    </SafeAreaProvider>
+  );
+}
