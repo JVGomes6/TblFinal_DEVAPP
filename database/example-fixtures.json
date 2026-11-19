@@ -1,0 +1,56 @@
+{
+  "contas": [
+    {
+      "credenciais": { "email": "titular@example.invalid", "senha": "sol-e-vento!" },
+      "noites": [
+        {
+          "id": "e66502b5-63d6-49f9-b43c-239d82d5ace1",
+          "fuso": "America/Sao_Paulo",
+          "deitou": "2024-11-16T23:00:00-03:00",
+          "dormiu": "2024-11-16T23:30:00-03:00",
+          "acordou": "2024-11-17T07:00:00-03:00",
+          "minutosAcordado": 20,
+          "despertares": 2,
+          "qualidade": 3,
+          "humor": 4,
+          "cansaco": null,
+          "fatores": { "cafeina": null, "telas": true, "ansiedade": false },
+          "sonho": "Sonhei com uma biblioteca fictícia."
+        },
+        {
+          "id": "327be420-6cc9-43ce-a60d-e33653401e4b",
+          "fuso": "America/Sao_Paulo",
+          "deitou": "2024-11-15T23:45:00-03:00",
+          "dormiu": "2024-11-16T00:00:00-03:00",
+          "acordou": "2024-11-16T07:00:00-03:00",
+          "minutosAcordado": null,
+          "despertares": null,
+          "qualidade": 4,
+          "humor": null,
+          "cansaco": 2,
+          "fatores": { "cafeina": false, "telas": true, "ansiedade": null },
+          "sonho": null
+        }
+      ]
+    },
+    {
+      "credenciais": { "email": "outra@example.invalid", "senha": "chuva de domingo na janela" },
+      "noites": [
+        {
+          "id": "5b569dae-7b97-4bcd-be55-b73a54a883d2",
+          "fuso": "America/Sao_Paulo",
+          "deitou": "2024-11-16T23:00:00-03:00",
+          "dormiu": "2024-11-16T23:30:00-03:00",
+          "acordou": "2024-11-17T07:00:00-03:00",
+          "minutosAcordado": 0,
+          "despertares": 0,
+          "qualidade": 5,
+          "humor": 2,
+          "cansaco": null,
+          "fatores": { "cafeina": null, "telas": false, "ansiedade": true },
+          "sonho": null
+        }
+      ]
+    }
+  ]
+}

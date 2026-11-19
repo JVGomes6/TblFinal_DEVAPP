@@ -20,8 +20,9 @@ const envSchema = z.object({
   JWT_AUDIENCE: z.string().trim().min(1).default('entrenoites-mobile'),
   JWT_TTL_SECONDS: z.coerce.number().int().positive().default(3600),
   CONSENT_VERSION: z.string().trim().min(1).default('sono-1'),
+  GEMINI_ENABLED: z.stringbool().default(false),
   GEMINI_API_KEY: z.string().trim().transform((key) => key || undefined).optional(),
-  GEMINI_MODEL: z.string().trim().min(1).default('gemini-2.5-flash'),
+  GEMINI_MODEL: z.string().trim().pipe(z.literal('gemini-2.5-flash')).default('gemini-2.5-flash'),
   GEMINI_TIMEOUT_MS: z.coerce.number().int().positive().default(45000),
 });
 
@@ -44,6 +45,7 @@ export const config = {
   jwtAudience: env.JWT_AUDIENCE,
   jwtTtlSeconds: env.JWT_TTL_SECONDS,
   consentVersion: env.CONSENT_VERSION,
+  geminiEnabled: env.GEMINI_ENABLED,
   geminiApiKey: env.GEMINI_API_KEY,
   geminiModel: env.GEMINI_MODEL,
   geminiTimeoutMs: env.GEMINI_TIMEOUT_MS,

@@ -39,7 +39,7 @@ authRouter.post('/login', limitarLogin, async (req, res) => {
   if (!usuario || !confere) throw credenciaisInvalidas();
 
   res.json({
-    token: emitirToken(usuario.id, usuario.sessao_versao),
+    token: await emitirToken(usuario.id, usuario.sessao_versao),
     expiraEm: config.jwtTtlSeconds,
     usuario: perfilPublico(usuario),
   });

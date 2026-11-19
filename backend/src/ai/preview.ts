@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 import type { Sessao } from '../auth/tokens.js';
 import { config } from '../config.js';
 import { resumirSono } from '../reports/summary.js';
-import { FATORES, hashDosMateriais, versaoCatalogo } from './compose.js';
+import { FATORES, hashDosMateriais, serializarContexto, versaoCatalogo } from './compose.js';
 import type { ContextoCartao, Fator } from './compose.js';
 
 const SEIS_DIAS_MS = 6 * 86_400_000;
@@ -41,7 +41,7 @@ export async function prepararPrevia(sessao: Sessao, revisaoConsentimento: numbe
   const { noites, mediaMin } = metricas;
   const fator = fatorEmDestaque(contagemFatores);
   const contexto: ContextoCartao = { foco, cobertura: coberturaDoPeriodo(noites), ...(fator && { fator }) };
-  const texto = JSON.stringify(contexto);
+  const texto = serializarContexto(contexto);
   const observacaoLocal = observar(noites, mediaMin, contagemFatores, fator);
 
   // A data, o titular, a sessão e a observação vinculam a prévia no servidor.

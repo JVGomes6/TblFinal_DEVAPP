@@ -2,8 +2,17 @@ import { Pool, types } from 'pg';
 import type { PoolClient } from 'pg';
 import { config } from '../config.js';
 
+const urlBanco = new URL(config.databaseUrl);
+const hostBanco = urlBanco.searchParams.getAll('host').at(-1) || urlBanco.hostname;
+const loopback = ['localhost', '127.0.0.1', '::1', '[::1]'].includes(hostBanco.toLowerCase());
+if (config.nodeEnv === 'production' || !loopback) {
+  // Os parâmetros TLS da URL têm precedência sobre a opção ssl do Pool.
+  urlBanco.searchParams.delete('ssl');
+  urlBanco.searchParams.set('sslmode', 'verify-full');
+}
+
 export const pool = new Pool({
-  connectionString: config.databaseUrl,
+  connectionString: urlBanco.href,
   ssl: true,
   enableChannelBinding: true,
   max: 5,

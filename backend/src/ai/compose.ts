@@ -10,10 +10,15 @@ export const FATORES = ['cafeina', 'telas', 'ansiedade'] as const;
 export const focoSchema = z.enum(FOCOS);
 export type Fator = typeof FATORES[number];
 
-export interface ContextoCartao {
-  foco: z.output<typeof focoSchema>;
-  cobertura: typeof COBERTURAS[number];
-  fator?: Fator;
+const contextoCartaoSchema = z.strictObject({
+  foco: focoSchema,
+  cobertura: z.enum(COBERTURAS),
+  fator: z.enum(FATORES).optional(),
+});
+export type ContextoCartao = z.output<typeof contextoCartaoSchema>;
+
+export function serializarContexto(contexto: ContextoCartao): string {
+  return JSON.stringify(contextoCartaoSchema.parse(contexto));
 }
 
 const fragmentoSchema = z.strictObject({

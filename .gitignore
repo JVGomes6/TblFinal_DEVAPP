@@ -1,0 +1,9 @@
+/.env
+/.env.*
+!/.env.example
+**/ambiente-app-sono.zip
+**/credentials.json
+*.jks
+*.keystore
+*.p12
+*.mobileprovision

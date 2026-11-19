@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import { errors, jwtVerify, SignJWT } from 'jose';
 import { z } from 'zod';
 import { config } from '../config.js';
 
@@ -16,24 +16,27 @@ export interface Sessao {
   expiraEm: number;
 }
 
-export function emitirToken(usuarioId: string, sessaoVersao: number): string {
-  return jwt.sign({ sessaoVersao }, config.jwtSecret, {
-    algorithm: 'HS256',
-    subject: usuarioId,
-    issuer: config.jwtIssuer,
-    audience: config.jwtAudience,
-    expiresIn: config.jwtTtlSeconds,
-  });
+export function emitirToken(usuarioId: string, sessaoVersao: number): Promise<string> {
+  const agora = Math.floor(Date.now() / 1000);
+  return new SignJWT({ sessaoVersao })
+    .setProtectedHeader({ alg: 'HS256', typ: 'JWT' })
+    .setSubject(usuarioId)
+    .setIssuer(config.jwtIssuer)
+    .setAudience(config.jwtAudience)
+    .setIssuedAt(agora)
+    .setExpirationTime(agora + config.jwtTtlSeconds)
+    .sign(config.jwtSecret);
 }
 
-export function verificarToken(token: string): Sessao | null {
+export async function verificarToken(token: string): Promise<Sessao | null> {
   try {
-    const claims = jwt.verify(token, config.jwtSecret, {
+    const { payload } = await jwtVerify(token, config.jwtSecret, {
       algorithms: ['HS256'],
       issuer: config.jwtIssuer,
       audience: config.jwtAudience,
+      requiredClaims: ['sub', 'exp', 'sessaoVersao'],
     });
-    const resultado = claimsSchema.safeParse(claims);
+    const resultado = claimsSchema.safeParse(payload);
     if (!resultado.success) return null;
 
     return {
@@ -42,7 +45,7 @@ export function verificarToken(token: string): Sessao | null {
       expiraEm: resultado.data.exp,
     };
   } catch (erro) {
-    if (erro instanceof jwt.JsonWebTokenError) return null;
+    if (erro instanceof errors.JOSEError) return null;
     throw erro;
   }
 }

@@ -1,5 +1,7 @@
 /.env
 /.env.*
 !/.env.example
+!/.env.test.example
+/.certs/
 /node_modules/
 /dist/

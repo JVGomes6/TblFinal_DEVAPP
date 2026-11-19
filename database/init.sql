@@ -1,4 +1,7 @@
-BEGIN;
+BEGIN ISOLATION LEVEL READ COMMITTED;
+
+-- Inicializações e migrações concorrentes aguardam pelo mesmo esquema.
+SELECT pg_advisory_xact_lock(hashtext('entrenoites:schema'), hashtext(current_schema()::text));
 
 CREATE TABLE IF NOT EXISTS usuarios (
   id UUID PRIMARY KEY,

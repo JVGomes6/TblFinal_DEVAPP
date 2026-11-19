@@ -1,7 +1,7 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useRef, useState } from 'react';
-import type { ReactNode } from 'react';
-import { ActivityIndicator, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
+import type { ReactNode, Ref } from 'react';
+import { ActivityIndicator, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { mensagemDaSolicitacao, useAuth } from '../context/AuthContext';
 import { usePreferences } from '../context/PreferencesContext';
@@ -13,13 +13,15 @@ import type { RootStackParamList } from './RootNavigator';
 
 type Props<T extends keyof RootStackParamList> = NativeStackScreenProps<RootStackParamList, T>;
 
-function Tela({ titulo, children, semCabecalho = false }: { titulo: string; children: ReactNode; semCabecalho?: boolean }) {
+export function Tela({ titulo, children, semCabecalho = false, rolagemRef, larguraMaxima = 520 }: {
+  titulo: string; children: ReactNode; semCabecalho?: boolean; rolagemRef?: Ref<ScrollView>; larguraMaxima?: number;
+}) {
   const { paleta } = usePreferences();
   return (
     <SafeAreaView style={[css.tela, { backgroundColor: paleta.fundo }]} edges={semCabecalho ? ['top', 'bottom', 'left', 'right'] : ['bottom', 'left', 'right']}>
       <KeyboardAvoidingView style={css.tela} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-        <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={css.rolagem}>
-          <View style={css.conteudo}>
+        <ScrollView ref={rolagemRef} keyboardShouldPersistTaps="handled" contentContainerStyle={css.rolagem}>
+          <View style={[css.conteudo, { maxWidth: larguraMaxima }]}>
             <Text accessibilityRole="header" style={[tipografia.titulo, { color: paleta.texto }]}>{titulo}</Text>
             {children}
           </View>
@@ -29,7 +31,7 @@ function Tela({ titulo, children, semCabecalho = false }: { titulo: string; chil
   );
 }
 
-function Texto({ children, erro = false }: { children: ReactNode; erro?: boolean }) {
+export function Texto({ children, erro = false }: { children: ReactNode; erro?: boolean }) {
   const { paleta } = usePreferences();
   return (
     <Text accessibilityRole={erro ? 'alert' : undefined} accessibilityLiveRegion={erro ? 'polite' : 'none'}
@@ -39,7 +41,7 @@ function Texto({ children, erro = false }: { children: ReactNode; erro?: boolean
   );
 }
 
-function Botao({ titulo, onPress, secundario = false, desabilitado = false }: {
+export function Botao({ titulo, onPress, secundario = false, desabilitado = false }: {
   titulo: string;
   onPress: () => void;
   secundario?: boolean;
@@ -61,7 +63,7 @@ function Botao({ titulo, onPress, secundario = false, desabilitado = false }: {
   );
 }
 
-function useAcaoDaTela() {
+export function useAcaoDaTela() {
   const [ocupado, setOcupado] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
   const acaoAtiva = useRef<AbortController | null>(null);
@@ -113,15 +115,6 @@ export function Welcome({ navigation }: Props<'Welcome'>) {
       <Botao titulo="Entrar" onPress={() => navigation.navigate('Login')} />
       <Botao titulo="Criar conta" secundario onPress={() => navigation.navigate('Register')} />
       <Botao titulo="Privacidade" secundario onPress={() => navigation.navigate('Privacy')} />
-    </Tela>
-  );
-}
-
-export function Privacy() {
-  return (
-    <Tela titulo="Seus dados">
-      <Texto>Seu e-mail identifica sua conta. Os horários de sono e as informações que você decidir acrescentar ao diário só são guardados se você autorizar.</Texto>
-      <Texto>Para gerar um cartão de reflexão, o app apresenta as categorias que serão enviadas ao Google Gemini e pede uma confirmação separada.</Texto>
     </Tela>
   );
 }
@@ -195,47 +188,14 @@ export function Consent({ navigation }: Props<'Consent'>) {
   );
 }
 
-export function Home({ navigation }: Props<'Home'>) {
-  const { ehNoite } = usePreferences();
-  return (
-    <Tela titulo={ehNoite ? 'Boa noite' : 'Seu diário'}>
-      <Botao titulo="Configurações" secundario onPress={() => navigation.navigate('Settings')} />
-    </Tela>
-  );
-}
-
-export function Settings({ navigation }: Props<'Settings'>) {
-  const { estado, sair } = useAuth();
-  const { altoContraste, atualizarPreferencias, paleta } = usePreferences();
-  const { executar, erro, ocupado } = useAcaoDaTela();
-  if (estado.status !== 'autenticado') return null;
-
-  return (
-    <Tela titulo="Sua conta">
-      <Texto>{estado.usuario.email}</Texto>
-      <View style={[css.linha, css.preferencia, { borderColor: paleta.borda }]}>
-        <Text style={[tipografia.rotulo, { color: paleta.texto, flex: 1 }]}>Alto contraste</Text>
-        <Switch accessibilityLabel="Alto contraste" value={altoContraste} disabled={ocupado}
-          trackColor={{ false: paleta.borda, true: paleta.primario }}
-          onValueChange={(valor) => { void executar(() => atualizarPreferencias({ altoContraste: valor })); }} />
-      </View>
-      {erro && <Texto erro>{erro}</Texto>}
-      {!estado.usuario.consentimento.ativo && <Botao titulo="Revisar consentimento" onPress={() => navigation.replace('Consent')} />}
-      <Botao titulo="Privacidade" secundario onPress={() => navigation.navigate('Privacy')} />
-      <Botao titulo="Sair da conta" secundario desabilitado={ocupado} onPress={() => { void executar(sair); }} />
-    </Tela>
-  );
-}
-
 const css = StyleSheet.create({
   tela: { flex: 1 },
   rolagem: { flexGrow: 1, padding: espacos.xl, alignItems: 'center' },
-  conteudo: { width: '100%', maxWidth: 520, gap: espacos.lg },
+  conteudo: { width: '100%', gap: espacos.lg },
   linha: { flexDirection: 'row', alignItems: 'center', gap: espacos.md },
   grupoCampo: { gap: espacos.sm },
   campo: { minHeight: controleMinimo, borderWidth: 1, borderRadius: 12, padding: espacos.md },
   botao: { minHeight: controleMinimo, paddingVertical: espacos.md, paddingHorizontal: espacos.lg,
     borderWidth: 1, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
-  preferencia: { minHeight: controleMinimo, padding: espacos.md, borderWidth: 1, borderRadius: 12 },
   textoCentral: { textAlign: 'center' },
 });

@@ -8,22 +8,24 @@
     "npm": "^10.0.0"
   },
   "scripts": {
+    "db:init": "node --env-file-if-exists=.env --import tsx scripts/init-db.ts",
     "dev": "node --env-file-if-exists=.env --watch --import tsx src/server.ts",
     "build": "tsc -p tsconfig.json",
-    "start": "node --env-file-if-exists=.env dist/server.js"
+    "start": "node --env-file-if-exists=.env dist/server.js",
+    "test:local": "node --env-file-if-exists=.env.test --test test/backend.test.mjs",
+    "smoke:gemini": "node --env-file-if-exists=.env scripts/verificar-gemini.mjs"
   },
   "dependencies": {
     "@google/genai": "^1.30.0",
     "bcryptjs": "^3.0.2",
     "express": "^5.1.0",
     "express-rate-limit": "^8.0.0",
-    "jsonwebtoken": "^9.0.2",
+    "jose": "^6.0.0",
     "pg": "^8.16.3",
     "zod": "^4.0.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
-    "@types/jsonwebtoken": "^9.0.0",
     "@types/node": "^22.13.0",
     "@types/pg": "^8.15.0",
     "tsx": "^4.0.0",

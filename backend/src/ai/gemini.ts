@@ -1,9 +1,9 @@
 import { FinishReason, GoogleGenAI } from '@google/genai';
 import { config } from '../config.js';
-import { cartaoIndisponivel } from './compose.js';
-import type { EsquemaRespostaCartao } from './compose.js';
+import { cartaoIndisponivel, serializarContexto } from './compose.js';
+import type { ContextoCartao, EsquemaRespostaCartao } from './compose.js';
 
-const clienteGemini = config.geminiApiKey ? new GoogleGenAI({
+const clienteGemini = config.geminiEnabled && config.geminiApiKey ? new GoogleGenAI({
   apiKey: config.geminiApiKey,
   vertexai: false,
   apiVersion: 'v1beta',
@@ -14,7 +14,7 @@ const clienteGemini = config.geminiApiKey ? new GoogleGenAI({
 }) : null;
 
 export async function gerarIdsNoGemini(
-  texto: string,
+  contexto: ContextoCartao,
   instrucaoSistema: string,
   esquema: EsquemaRespostaCartao,
   cancelamento: AbortSignal,
@@ -26,7 +26,7 @@ export async function gerarIdsNoGemini(
     sinal.throwIfAborted();
     const resposta = await clienteGemini.models.generateContent({
       model: config.geminiModel,
-      contents: texto,
+      contents: serializarContexto(contexto),
       config: {
         systemInstruction: instrucaoSistema,
         responseMimeType: 'application/json',
@@ -34,7 +34,7 @@ export async function gerarIdsNoGemini(
         candidateCount: 1,
         temperature: 0.4,
         maxOutputTokens: 256,
-        ...(config.geminiModel === 'gemini-2.5-flash' && { thinkingConfig: { thinkingBudget: 0 } }),
+        thinkingConfig: { thinkingBudget: 0 },
         abortSignal: sinal,
       },
     });
@@ -42,7 +42,7 @@ export async function gerarIdsNoGemini(
 
     const candidato = resposta.candidates?.[0];
     const partes = candidato?.content?.parts?.filter(({ thought }) => !thought);
-    if (resposta.candidates?.length !== 1 || candidato?.finishReason !== FinishReason.STOP ||
+    if (resposta.modelVersion !== config.geminiModel || resposta.candidates?.length !== 1 || candidato?.finishReason !== FinishReason.STOP ||
         !partes?.length || partes.some((parte) => typeof parte.text !== 'string')) {
       throw cartaoIndisponivel();
     }

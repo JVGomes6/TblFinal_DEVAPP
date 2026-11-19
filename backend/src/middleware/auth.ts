@@ -21,7 +21,7 @@ declare global {
 export const exigirAutenticacao: RequestHandler = async (req, res, next) => {
   res.set('Cache-Control', 'no-store');
   const token = /^Bearer +([^\s,]+)$/i.exec(req.get('Authorization') ?? '')?.[1];
-  const sessao = token ? verificarToken(token) : null;
+  const sessao = token ? await verificarToken(token) : null;
   if (!sessao) throw sessaoInvalida();
 
   const usuario = await buscarUsuarioAutenticado(sessao);

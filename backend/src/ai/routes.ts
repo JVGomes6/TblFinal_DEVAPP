@@ -49,10 +49,11 @@ aiRouter.post('/ritual', limitarGeracao, async (req, res) => {
     }
 
     const { opcoes, esquema, instrucaoSistema } = prepararComposicao(contexto);
-    const resposta = await gerarIdsNoGemini(previa.texto, instrucaoSistema, esquema, controlador.signal);
-    const cartao = comporCartao(resposta, opcoes);
+    const resposta = await gerarIdsNoGemini(contexto, instrucaoSistema, esquema, controlador.signal);
+    if (controlador.signal.aborted) return;
     await revalidarConsentimento(sessao, usuario.consentimento_versao);
     if (controlador.signal.aborted) return;
+    const cartao = comporCartao(resposta, opcoes);
 
     res.json({ origem: 'gemini', observacaoLocal, ...cartao, versaoCatalogo: previa.versaoCatalogo });
   } catch (erro) {
