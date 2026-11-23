@@ -90,7 +90,8 @@ export function SleepDetail({ route, navigation }: NativeStackScreenProps<RootSt
       </BlocoDiario>
       {falhaExclusao && <Texto erro>{falhaExclusao}</Texto>}
       {falhaExclusao && <Botao titulo="Recarregar registro" secundario onPress={atualizarRegistro} />}
-      <Botao titulo="Editar noite" desabilitado={apagando || conflito} onPress={() => navigation.navigate('SleepForm', { id: registro.id })} />
+      <Botao titulo="Confirmar e voltar" desabilitado={apagando || apagada} onPress={() => navigation.goBack()} />
+      <Botao titulo="Editar noite" secundario desabilitado={apagando || conflito} onPress={() => navigation.navigate('SleepForm', { id: registro.id })} />
       <Botao titulo={apagando ? 'Apagando…' : 'Apagar noite'} secundario desabilitado={apagando || conflito}
         onPress={() => Alert.alert('Apagar esta noite?', `O registro de ${formatarData(registro.dataLocal)} será excluído do diário.`, [
           { text: 'Cancelar', style: 'cancel' }, { text: 'Apagar noite', style: 'destructive', onPress: () => { void apagar(registro.versao); } },
