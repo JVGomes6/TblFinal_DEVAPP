@@ -4,7 +4,10 @@
     "slug": "entrenoites",
     "version": "1.0.0",
     "scheme": "entrenoites",
-    "platforms": ["android", "ios"],
+    "platforms": [
+      "android",
+      "ios"
+    ],
     "orientation": "default",
     "userInterfaceStyle": "automatic",
     "android": {
@@ -15,6 +18,11 @@
       "bundleIdentifier": "br.edu.appsono.entrenoites",
       "supportsTablet": true
     },
-    "plugins": ["expo-dev-client", "expo-secure-store"]
+    "plugins": [
+      "expo-dev-client",
+      "expo-secure-store",
+      "expo-sharing",
+      "expo-status-bar"
+    ]
   }
 }

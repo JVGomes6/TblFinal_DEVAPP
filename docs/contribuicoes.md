@@ -2,11 +2,11 @@
 
 ## Divisão definitiva da equipe
 
-| Membro | Parte | Responsabilidade principal |
-| --- | --- | --- |
-| Gabriel Trichez Dias | Parte A | Conta, privacidade e segurança |
-| Rafael Aranao Correa | Parte B | Diário e núcleo funcional |
-| Joao gomes | Parte C | Relatório, IAGen e acessibilidade |
+| Membro | Telas | Código do aplicativo (React Native) | Código das APIs, do banco de dados ou da IAGen | Itens do documento |
+| --- | --- | --- | --- | --- |
+| Gabriel Trichez Dias | Cadastro, Login, Privacidade e ações de conta em Configurações | Navegação, `AuthContext`, sessão, comunicação com a API de conta e consentimento | Autenticação, usuários, JWT, hash de senha, autorização, consentimento e tabelas de conta | Apresentação, tecnologias, arquitetura e segurança/LGPD |
+| Rafael Aranao Correa | Home, Registrar noite, Editar noite, Histórico, Detalhe da noite e Rotina | Formulário do diário, hooks, serviços de sono, fluxos de registros e Home contextual | CRUD, validação, métricas, repositório PostgreSQL e esquema do diário | Execução em desenvolvimento, qualidade, responsividade, contexto e itens de IHC/UX do diário |
+| Joao Vitor de Oliveira Gomes | Relatório, Reflexão e preferências visuais em Configurações | PDF, serviços e fluxo da reflexão, preferências e alto contraste | API de relatórios, Gemini, prévia, autorização, materiais da IAGen e composição do cartão | Geração do APK, acessibilidade, itens de IHC/UX da reflexão e do relatório, inovação e revisão da entrega |
 
 Esta é a divisão definitiva informada pela equipe. Todos possuem telas, código React Native, uma parte técnica de API/banco/IAGen conforme sua frente e uma parte da documentação para apresentar e explicar.
 
@@ -69,7 +69,7 @@ Esta é a divisão definitiva informada pela equipe. Todos possuem telas, códig
 
 ## Parte C — Relatório, IAGen e acessibilidade
 
-**Responsável: Joao gomes**
+**Responsável: Joao Vitor de Oliveira Gomes**
 
 **Telas:**
 
@@ -110,7 +110,7 @@ As etapas de implementação e verificação foram assistidas por IA. As instru�
 
 ## Roteiro de demonstração
 
-Use somente contas, senhas e registros fictícios. Prepare o banco e o app conforme o [README](../README.md#4-execução-em-ambiente-de-desenvolvimento) e os [exemplos de demonstração](inicializacao-backend.md#dados-fictícios-para-demonstração). O ensaio local de referência mantém `GEMINI_ENABLED=false`; a geração real não é um resultado comprovado por esse ensaio.
+Use somente contas, senhas e registros fictícios. Prepare o banco e o app conforme o [README](../README.md#4-execução-em-ambiente-de-desenvolvimento) e os [exemplos de demonstração](inicializacao-backend.md#dados-fictícios-para-demonstração). Para a Reflexão, habilite o Gemini no backend e confirme a geração com uma conta fictícia antes da apresentação.
 
 ### Gabriel Trichez Dias — Parte A
 
@@ -128,11 +128,11 @@ Use somente contas, senhas e registros fictícios. Prepare o banco e o app confo
 4. Apresente o formulário, os hooks e os serviços de sono no React Native. Explique como CRUD, validação, métricas e repositório PostgreSQL sustentam esses fluxos.
 5. Mostre os estados de erro e carregamento e relacione-os à execução em desenvolvimento, à qualidade, à responsividade e aos itens de IHC/UX da sua frente.
 
-### Joao gomes — Parte C
+### Joao Vitor de Oliveira Gomes — Parte C
 
 1. Mostre a personalização persistente do destaque da Home e o alto contraste em Configurações. Explique as adaptações à fonte do sistema e os limites do ensaio parcial com TalkBack.
 2. Abra o Relatório, selecione o período e consulte a prévia. Salve o PDF em uma pasta escolhida e mostre a ação separada de compartilhamento. Depois, feche o app, desligue a rede e abra o PDF pelo gerenciador de arquivos; restabeleça a rede antes de continuar.
-3. Na Reflexão, escolha o foco, consulte a prévia e explique as categorias, a autorização por envio, a integração backend/Gemini e a seleção de IDs do catálogo. Com a geração desligada, demonstre a indisponibilidade sem afirmar que um cartão real foi gerado.
+3. Na Reflexão, escolha o foco, consulte a prévia e autorize a geração do cartão. Explique as categorias enviadas, a autorização por envio, a integração backend/Gemini e a seleção de IDs do catálogo.
 4. Apresente o fluxo React Native, os serviços de relatório e reflexão, os materiais da IAGen e a composição do cartão. Use as evidências do ensaio com transporte simulado para explicar a observação, a pergunta que pode ser pulada e o retorno ao histórico do período.
 5. Explique o perfil `production-apk`, as etapas de assinatura, o ZIP privado e as pendências da entrega. Relacione a demonstração às seções de acessibilidade e criatividade/inovação.
 

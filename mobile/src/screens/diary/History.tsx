@@ -2,7 +2,8 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useState } from 'react';
 import { ActivityIndicator, FlatList, Keyboard, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { BlocoDiario, CampoDiario, escalas, OpcoesDiario } from '../../components/DiarioFields';
+import { CampoData } from '../../components/CampoData';
+import { BlocoDiario, escalas, OpcoesDiario } from '../../components/DiarioFields';
 import { usePreferences } from '../../context/PreferencesContext';
 import { useSleepList } from '../../hooks/useSleepList';
 import { Botao, Texto } from '../../navigation/FoundationScreens';
@@ -10,7 +11,7 @@ import type { RootStackParamList } from '../../navigation/RootNavigator';
 import type { FiltrosSono } from '../../services/sleep';
 import { controleMinimo, espacos } from '../../theme/spacing';
 import { tipografia } from '../../theme/typography';
-import { formatarData, formatarDuracao, interpretarData, mascaraData } from '../../utils/sleepForm';
+import { formatarData, formatarDuracao, interpretarData } from '../../utils/sleepForm';
 
 const opcoesQualidade = [{ valor: null, texto: 'Todas' }, ...escalas.qualidade.map((_, i) => ({ valor: i + 1, texto: String(i + 1) }))];
 
@@ -45,10 +46,10 @@ export function History({ navigation, route }: NativeStackScreenProps<RootStackP
 
   const cabecalho = (
     <BlocoDiario titulo="Filtrar noites">
-      <CampoDiario rotulo="Data inicial" placeholder="DD/MM/AAAA" keyboardType="number-pad" value={inicio}
-        onChangeText={(texto) => { setInicio(mascaraData(texto)); setErros((valor) => ({ ...valor, de: undefined })); }} erro={erros.de} />
-      <CampoDiario rotulo="Data final" placeholder="DD/MM/AAAA" keyboardType="number-pad" value={fim}
-        onChangeText={(texto) => { setFim(mascaraData(texto)); setErros((valor) => ({ ...valor, ate: undefined })); }} erro={erros.ate} />
+      <CampoData rotulo="Data inicial" value={inicio}
+        onChangeText={(texto) => { setInicio(texto); setErros((valor) => ({ ...valor, de: undefined })); }} erro={erros.de} />
+      <CampoData rotulo="Data final" value={fim}
+        onChangeText={(texto) => { setFim(texto); setErros((valor) => ({ ...valor, ate: undefined })); }} erro={erros.ate} />
       <OpcoesDiario rotulo="Qualidade" valor={qualidade} opcoes={opcoesQualidade} alterar={setQualidade} legenda="1 muito ruim · 5 muito boa" />
       <Botao titulo="Aplicar filtros" onPress={aplicar} />
       {(comFiltros || inicio || fim || qualidade !== null) && <Botao titulo="Limpar filtros" secundario onPress={limpar} />}
@@ -83,7 +84,7 @@ export function History({ navigation, route }: NativeStackScreenProps<RootStackP
             <Botao titulo={paginando ? 'Carregando…' : erroPagina ? 'Tentar carregar mais' : 'Carregar mais'}
               secundario desabilitado={paginando} onPress={() => { void carregarMais(); }} />
           </View>
-        ) : null} />
+        ) : undefined} />
     </SafeAreaView>
   );
 }

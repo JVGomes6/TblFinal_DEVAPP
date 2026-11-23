@@ -29,11 +29,7 @@ Em outro terminal, execute `curl.exe -i http://127.0.0.1:3333/v1/health`. O resu
 
 ## Teste local com dados fictícios
 
-Use uma instância PostgreSQL local. Com Docker em execução, este comando cria um banco de teste temporário na porta 55432:
-
-```powershell
-docker run --rm --name entrenoites-pg-teste -e POSTGRES_USER=entrenoites -e POSTGRES_PASSWORD=senha-ficticia-local -e POSTGRES_DB=entrenoites_teste -p 127.0.0.1:55432:5432 postgres:18.6@sha256:e3d24f6906d0760bf4da0dae872415391ededefad23fd471c47dc53b0ddf3c42
-```
+Inicie o PostgreSQL local na porta 55432 conforme o [README](../README.md#4-execução-em-ambiente-de-desenvolvimento). O exemplo usa um volume persistente.
 
 Em outro terminal, a partir da raiz:
 

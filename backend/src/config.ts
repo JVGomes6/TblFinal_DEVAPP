@@ -22,7 +22,7 @@ const envSchema = z.object({
   CONSENT_VERSION: z.string().trim().min(1).default('sono-1'),
   GEMINI_ENABLED: z.stringbool().default(false),
   GEMINI_API_KEY: z.string().trim().transform((key) => key || undefined).optional(),
-  GEMINI_MODEL: z.string().trim().pipe(z.literal('gemini-2.5-flash')).default('gemini-2.5-flash'),
+  GEMINI_MODEL: z.string().trim().pipe(z.enum(['gemini-2.5-flash', 'gemini-3.1-flash-lite'])).default('gemini-3.1-flash-lite'),
   GEMINI_TIMEOUT_MS: z.coerce.number().int().positive().default(45000),
 });
 

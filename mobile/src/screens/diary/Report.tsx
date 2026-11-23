@@ -2,7 +2,8 @@ import { Temporal } from '@js-temporal/polyfill';
 import { useFocusEffect } from '@react-navigation/native';
 import { useCallback, useRef, useState } from 'react';
 import { ActivityIndicator, Keyboard, Platform, StyleSheet, View } from 'react-native';
-import { BlocoDiario, CampoDiario, escalas, OpcoesDiario } from '../../components/DiarioFields';
+import { CampoData } from '../../components/CampoData';
+import { BlocoDiario, escalas, OpcoesDiario } from '../../components/DiarioFields';
 import { usePreferences } from '../../context/PreferencesContext';
 import { useErroDiario } from '../../hooks/useSleepList';
 import { Botao, Tela, Texto } from '../../navigation/FoundationScreens';
@@ -12,7 +13,7 @@ import type { PeriodoSono, ResumoDoPeriodo } from '../../services/reports';
 import { espacos } from '../../theme/spacing';
 import { periodoDeSeteDias, periodoDoMes } from '../../utils/periodoSono';
 import { avisosDoRelatorio, descreverSpearman, formatarMinutosRelatorio, rotuloCobertura } from '../../utils/reportPresentation';
-import { formatarData, interpretarData, mascaraData } from '../../utils/sleepForm';
+import { formatarData, interpretarData } from '../../utils/sleepForm';
 
 const opcoes = [
   { valor: 'semana', texto: 'Últimos 7 dias' },
@@ -26,11 +27,6 @@ type Erros = { mes?: string; inicio?: string; fim?: string };
 const acoesEmAndamento: Record<Atividade, string> = {
   consultando: 'Carregando prévia…', salvando: 'Preparando e salvando PDF…', compartilhando: 'Preparando PDF para compartilhar…',
 };
-
-function mascaraMes(texto: string): string {
-  const digitos = texto.replace(/\D/g, '').slice(0, 6);
-  return [digitos.slice(0, 2), digitos.slice(2)].filter(Boolean).join('/');
-}
 
 export function Report() {
   const { paleta } = usePreferences();
@@ -141,14 +137,14 @@ export function Report() {
           setSelecao(valor);
           invalidar();
         }} />
-        {selecao === 'mes' && <CampoDiario rotulo="Mês e ano" placeholder="MM/AAAA" value={mes} erro={erros.mes}
-          editable={!atividade} keyboardType="number-pad" onChangeText={(valor) => { setMes(mascaraMes(valor)); invalidar(); }} />}
+        {selecao === 'mes' && <CampoData rotulo="Mês e ano" somenteMes value={mes} erro={erros.mes}
+          editable={!atividade} onChangeText={(valor) => { setMes(valor); invalidar(); }} />}
         {selecao === 'personalizado' && (
           <>
-            <CampoDiario rotulo="Data inicial" placeholder="DD/MM/AAAA" value={inicio} erro={erros.inicio} editable={!atividade}
-              keyboardType="number-pad" onChangeText={(valor) => { setInicio(mascaraData(valor)); invalidar(); }} />
-            <CampoDiario rotulo="Data final" placeholder="DD/MM/AAAA" value={fim} erro={erros.fim} editable={!atividade}
-              keyboardType="number-pad" onChangeText={(valor) => { setFim(mascaraData(valor)); invalidar(); }} />
+            <CampoData rotulo="Data inicial" value={inicio} erro={erros.inicio} editable={!atividade}
+              onChangeText={(valor) => { setInicio(valor); invalidar(); }} />
+            <CampoData rotulo="Data final" value={fim} erro={erros.fim} editable={!atividade}
+              onChangeText={(valor) => { setFim(valor); invalidar(); }} />
           </>
         )}
         {periodoSugerido && <Texto>{formatarData(periodoSugerido.de)} a {formatarData(periodoSugerido.ate)}</Texto>}

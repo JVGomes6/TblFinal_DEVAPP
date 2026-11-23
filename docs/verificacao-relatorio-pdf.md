@@ -20,3 +20,5 @@ A inspeção visual e a extração de texto confirmaram a paginação, as datas 
 No Android, cancelar o seletor de pasta não criou arquivo e exibiu apenas a confirmação do cancelamento. O compartilhamento abriu a folha nativa em ação separada. Os temporários foram removidos após o salvamento. Ao reabrir o app, a limpeza inicial removeu dois temporários próprios de controle e preservou o arquivo sem o padrão do relatório. Um ensaio local com as operações de arquivo simuladas também verificou erro de gravação, cópia truncada, tentativa de remover o destino parcial e o aviso caso a remoção falhe.
 
 `npm run typecheck` passou no diretório `mobile`. O formulário personalizado aceitou um intervalo de 31 dias, recusou 32 dias e orientou a escolher outro período quando o resultado estava vazio.
+
+Em 23/11/2026, no emulador `Medium_Phone`, tocar em **Mês e ano** no modo **Mês civil** abriu o seletor de meses. O teste voltou um ano e selecionou outubro de 2025. No modo **Personalizado**, o calendário preencheu as duas datas. Para usar o teclado, escolha **Digitar mês e ano** ou **Digitar data** no seletor.

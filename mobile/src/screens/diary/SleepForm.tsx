@@ -2,8 +2,10 @@ import { usePreventRemove } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { randomUUID } from 'expo-crypto';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import type { ComponentRef } from 'react';
 import { AccessibilityInfo, ActivityIndicator, Alert, Keyboard, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import type { LayoutChangeEvent, ScrollView, TextInput } from 'react-native';
+import { CampoData } from '../../components/CampoData';
 import { BlocoDiario, CampoDiario, escalas, OpcoesDiario } from '../../components/DiarioFields';
 import { usePreferences } from '../../context/PreferencesContext';
 import { useErroDiario, useRegistroSono } from '../../hooks/useSleepList';
@@ -15,7 +17,7 @@ import type { DadosSono, RegistroSono } from '../../services/sleep';
 import { espacos } from '../../theme/spacing';
 import { tipografia } from '../../theme/typography';
 import {
-  formatarData, formatarDuracao, horarios, mascaraData, mascaraHora, rascunhoInicial, rotulosFatores, rotulosHorario, validarRascunho,
+  formatarData, formatarDuracao, horarios, mascaraHora, rascunhoInicial, rotulosFatores, rotulosHorario, validarRascunho,
 } from '../../utils/sleepForm';
 import type { CampoSono, ErrosSono, Horario, RascunhoSono } from '../../utils/sleepForm';
 
@@ -69,9 +71,9 @@ function EditorSono({ navigation, inicial }: { navigation: Props['navigation']; 
   const [salva, setSalva] = useState<string | null>(null);
   const operacao = useRef<AbortController | null>(null);
   const tentativa = useRef<{ id: string; dados: DadosSono } | null>(null);
-  const rolagem = useRef<ScrollView>(null);
-  const referencias = useRef<Partial<Record<CampoSono, TextInput | null>>>({});
-  const primeiraQualidade = useRef<View>(null);
+  const rolagem = useRef<ComponentRef<typeof ScrollView>>(null);
+  const referencias = useRef<Partial<Record<CampoSono, ComponentRef<typeof TextInput> | null>>>({});
+  const primeiraQualidade = useRef<ComponentRef<typeof View>>(null);
   const posicoes = useRef<Partial<Record<CampoSono, number>>>({});
   const validacao = useMemo(() => validarRascunho(rascunho), [rascunho]);
   const erros = { ...(exibirErros ? validacao.erros : {}), ...errosServidor };
@@ -223,10 +225,10 @@ function EditorSono({ navigation, inicial }: { navigation: Props['navigation']; 
             <BlocoDiario titulo={rotulosHorario[campo]}>
               <View style={[css.camposHorario, horariosEmLinha && css.linha]}>
                 <View style={[css.campoHorario, horariosEmLinha && css.campoEmLinha]}>
-                  <CampoDiario rotulo="Data" accessibilityLabel={`${rotulosHorario[campo]} — data`} testID={data}
-                    placeholder="DD/MM/AAAA" keyboardType="number-pad" editable={!bloqueado} value={rascunho[campo].data}
+                  <CampoData rotulo="Data" accessibilityLabel={`${rotulosHorario[campo]} — data`} testID={data}
+                    editable={!bloqueado} value={rascunho[campo].data}
                     erro={erros[data]} inputRef={(ref) => { referencias.current[data] = ref; }}
-                    onChangeText={(texto) => alterarHorario(campo, 'data', mascaraData(texto))} />
+                    onChangeText={(texto) => alterarHorario(campo, 'data', texto)} />
                 </View>
                 <View style={[css.campoHorario, horariosEmLinha && css.campoEmLinha]}>
                   <CampoDiario rotulo="Hora" accessibilityLabel={`${rotulosHorario[campo]} — hora`} testID={hora}

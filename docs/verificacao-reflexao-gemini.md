@@ -4,6 +4,8 @@
 
 `POST /v1/ai/preview` calcula as categorias dos últimos sete dias e devolve o JSON exato a ser enviado, seu hash e a contagem para exibição no app. O contexto variável tem `foco`, `cobertura` e, quando há um único fator com pelo menos duas marcações afirmativas, `fator`. Contagem exata, observação, e-mail, notas, horários, datas e identificadores ficam no EntreNoites.
 
+Na tela **Reflexão**, toque em **Data final** para escolher um dia no calendário ou em **Digitar data** para usar o teclado. Em 23/11/2026, o teste Android abriu o seletor, cancelou e depois selecionou 22/11/2026. A data selecionada apareceu no campo e passou a definir o fim do período da próxima prévia.
+
 `POST /v1/ai/ritual` exige o consentimento do diário, a confirmação do envio e o hash da prévia atual. O backend usa `@google/genai` com `responseMimeType: 'application/json'` e um esquema que enumera os IDs permitidos para `abertura`, `pergunta` e `fecho`. Após a inferência, verifica a revisão de consentimento e aceita apenas IDs do catálogo compatíveis com a prévia. [Saída estruturada do Gemini](https://aistudio.google.com/docs/structured-output)
 
 O cancelamento da conexão interrompe a espera do backend e sinaliza o cancelamento ao SDK. A revogação invalida a entrega do cartão mesmo após um novo aceite. Um envio já recebido pelo provedor continua sujeito aos termos do Google. A instalação de avaliação usa dados fictícios. [Termos da API Gemini](https://ai.google.dev/gemini-api/terms?hl=pt-br)
@@ -40,4 +42,4 @@ npm run build
 npm run smoke:gemini
 ```
 
-Um ensaio real exige uma chave de projeto com acesso a `gemini-2.5-flash`. O Google informa que o acesso está limitado a projetos com histórico de uso e que, a partir de 1º de dezembro de 2026, direcionará as chamadas de `gemini-2.5-flash` para `gemini-3.5-flash-lite`. O backend confere a versão informada na resposta antes de entregar o cartão. [Cronograma do Google](https://aistudio.google.com/docs/deprecations#gemini-2.5-flash-models) · [Referência de `modelVersion`](https://aistudio.google.com/api-reference/generate-content#Resource:GenerateContentResponse)
+O modelo padrão é `gemini-3.1-flash-lite`. Em 23/11/2026, o ensaio com contexto fictício retornou três IDs válidos e compôs um cartão pelo adaptador real. O backend confere a versão informada na resposta antes de entregar o cartão. [Referência de `modelVersion`](https://aistudio.google.com/api-reference/generate-content#Resource:GenerateContentResponse)

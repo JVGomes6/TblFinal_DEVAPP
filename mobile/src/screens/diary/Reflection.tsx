@@ -3,7 +3,8 @@ import { useFocusEffect } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useCallback, useRef, useState } from 'react';
 import { ActivityIndicator, AppState, Keyboard, Platform, StyleSheet, Text, View } from 'react-native';
-import { BlocoDiario, CampoDiario, OpcoesDiario } from '../../components/DiarioFields';
+import { CampoData } from '../../components/CampoData';
+import { BlocoDiario, OpcoesDiario } from '../../components/DiarioFields';
 import { usePreferences } from '../../context/PreferencesContext';
 import { useErroDiario } from '../../hooks/useSleepList';
 import { Botao, Tela, Texto } from '../../navigation/FoundationScreens';
@@ -15,7 +16,7 @@ import type { PeriodoSono } from '../../services/reports';
 import { espacos } from '../../theme/spacing';
 import { tipografia } from '../../theme/typography';
 import { periodoDeSeteDias } from '../../utils/periodoSono';
-import { formatarData, interpretarData, mascaraData } from '../../utils/sleepForm';
+import { formatarData, interpretarData } from '../../utils/sleepForm';
 
 const focos = [
   { valor: 'rotina', texto: 'Rotina' },
@@ -130,9 +131,8 @@ export function Reflection({ navigation }: NativeStackScreenProps<RootStackParam
           setFoco(valor);
           setEstado(edicao);
         }} />
-        <CampoDiario rotulo="Data final" placeholder="DD/MM/AAAA" keyboardType="number-pad" value={data}
-          erro={erroData} editable={!ocupado} onChangeText={(texto) => {
-            const valor = mascaraData(texto);
+        <CampoData rotulo="Data final" value={data}
+          erro={erroData} editable={!ocupado} onChangeText={(valor) => {
             if (valor === data) return;
             setData(valor);
             setErroData(undefined);

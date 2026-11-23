@@ -1,4 +1,4 @@
-import type { ReactNode, Ref } from 'react';
+import type { ComponentRef, ReactNode, Ref } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import type { TextInputProps } from 'react-native';
 import { usePreferences } from '../context/PreferencesContext';
@@ -9,7 +9,7 @@ import { tipografia } from '../theme/typography';
 export { escalas } from '../utils/sleepForm';
 
 export function CampoDiario({ rotulo, erro, inputRef, ...props }: TextInputProps & {
-  rotulo: string; erro?: string; inputRef?: Ref<TextInput>;
+  rotulo: string; erro?: string; inputRef?: Ref<ComponentRef<typeof TextInput>>;
 }) {
   const { paleta } = usePreferences();
   return (
@@ -27,7 +27,7 @@ export function CampoDiario({ rotulo, erro, inputRef, ...props }: TextInputProps
 
 export function OpcoesDiario<T extends string | number | boolean | null>({ rotulo, valor, opcoes, alterar, legenda, erro, desabilitado, primeiraOpcaoRef }: {
   rotulo: string; valor: T; opcoes: ReadonlyArray<{ valor: T; texto: string }>; alterar: (valor: T) => void;
-  legenda?: string; erro?: string; desabilitado?: boolean; primeiraOpcaoRef?: Ref<View>;
+  legenda?: string; erro?: string; desabilitado?: boolean; primeiraOpcaoRef?: Ref<ComponentRef<typeof View>>;
 }) {
   const { paleta } = usePreferences();
   return (
@@ -53,7 +53,7 @@ export function OpcoesDiario<T extends string | number | boolean | null>({ rotul
   );
 }
 
-export function BlocoDiario({ titulo, tituloRef, children }: { titulo?: string; tituloRef?: Ref<Text>; children: ReactNode }) {
+export function BlocoDiario({ titulo, tituloRef, children }: { titulo?: string; tituloRef?: Ref<ComponentRef<typeof Text>>; children: ReactNode }) {
   const { paleta } = usePreferences();
   return (
     <View style={[css.bloco, { backgroundColor: paleta.superficie, borderColor: paleta.borda }]}>

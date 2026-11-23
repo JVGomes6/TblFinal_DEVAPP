@@ -9,11 +9,11 @@ Diário autorrelatado com conta, consentimento, histórico, métricas de sono, e
 | Camada | Versão verificada |
 | --- | --- |
 | Ensaio | Node 22.23.5, npm 10.9.11, PostgreSQL 18.6 local |
-| App | Expo 54.0.38, React 19.1.0, React Native 0.81.5 |
+| App | Expo 58.0.26, React 19.3.0, React Native 0.88.1 |
 | PDF | expo-print 15.0.8, expo-file-system 19.0.24 e expo-sharing 14.0.8 |
 | API | Express 5.3.0, pg 8.23.1, zod 4.6.7 |
 | Autenticação | bcryptjs 3.0.3, jose 6.2.18 |
-| Reflexão | @google/genai 1.52.0, modelo solicitado `gemini-2.5-flash`, catálogo `cartao-1` |
+| Reflexão | @google/genai 1.52.0, modelo padrão `gemini-3.1-flash-lite`, catálogo `cartao-1` |
 
 As decisões confirmadas durante a implementação substituíram SQLite, Argon2id e Ollama por PostgreSQL, bcryptjs e Gemini. O roteiro de produção corresponde à implementação versionada. A instalação SQLite/Ollama citada no enunciado da Etapa 9 exigiria outra implementação e outro ensaio. O Gemini é um serviço remoto com modelo identificado na resposta e sem digest local de pesos. [Limites do ensaio do Gemini](verificacao-reflexao-gemini.md)
 
@@ -42,6 +42,8 @@ As rotas `/v1/auth/*` e `/v1/users/me*` tratam conta e consentimento. `/v1/sleep
 ## 6. Frontend e fluxos
 
 A navegação limita as telas de saúde às sessões consentidas. O formulário único preserva fuso e offset, suporta reenvio por UUID e apresenta conflitos de versão. A Home e o relatório usam a mesma consulta. A exportação monta HTML A4 local, salva por seletor de pasta no Android e oferece a folha de compartilhamento no iOS. [Diário](verificacao-diario-android.md) · [PDF](verificacao-relatorio-pdf.md)
+
+O componente `CampoData` é compartilhado pelo Diário, Histórico, Relatório e Reflexão. Ele apresenta o calendário e a edição manual, com o formato `DD/MM/AAAA` ou `MM/AAAA` no relatório mensal. A navegação do calendário usa datas civis do Temporal. Os validadores de cada tela continuam aplicando as regras de datas e períodos do próprio fluxo.
 
 ## 7. IHC e acessibilidade
 

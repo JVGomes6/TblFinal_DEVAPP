@@ -20,7 +20,7 @@ if (!process.env.GEMINI_API_KEY?.trim()) {
     console.log(JSON.stringify({ modelo: config.geminiModel, versaoCatalogo, ids: JSON.parse(ids), cartao }, null, 2));
   } catch (erro) {
     if (erro?.code === 'ERR_MODULE_NOT_FOUND') console.error('Compile o backend com npm run build antes do ensaio.');
-    else console.error('O ensaio não obteve um cartão validado de gemini-2.5-flash. Verifique a configuração e o acesso do projeto ao modelo.');
+    else console.error('O ensaio não obteve um cartão validado. Verifique a configuração e o acesso do projeto ao modelo Gemini.');
     process.exitCode = 1;
   }
 }

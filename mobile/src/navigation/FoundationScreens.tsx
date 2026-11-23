@@ -1,6 +1,6 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useRef, useState } from 'react';
-import type { ReactNode, Ref } from 'react';
+import type { ComponentRef, ReactNode, Ref } from 'react';
 import { ActivityIndicator, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { mensagemDaSolicitacao, useAuth } from '../context/AuthContext';
@@ -14,7 +14,7 @@ import type { RootStackParamList } from './RootNavigator';
 type Props<T extends keyof RootStackParamList> = NativeStackScreenProps<RootStackParamList, T>;
 
 export function Tela({ titulo, children, semCabecalho = false, rolagemRef, larguraMaxima = 520 }: {
-  titulo: string; children: ReactNode; semCabecalho?: boolean; rolagemRef?: Ref<ScrollView>; larguraMaxima?: number;
+  titulo: string; children: ReactNode; semCabecalho?: boolean; rolagemRef?: Ref<ComponentRef<typeof ScrollView>>; larguraMaxima?: number;
 }) {
   const { paleta } = usePreferences();
   return (

@@ -29,6 +29,8 @@ O valor `http://10.0.2.2:3333/v1` em `mobile/.env` aponta para a API no host a p
 
 Em 18/11/2026, o development build foi compilado, instalado e executado no emulador `Medium_Phone_API_37.0` (x86_64), conectado à API real com PostgreSQL local. O roteiro de cadastro, login, aceite, criação, reabertura, edição, filtro e exclusão passou. O Android também confirmou o aviso ao sair com alterações, o erro de campo ao informar zero despertares com 20 minutos acordado e a preservação do filtro de qualidade 5 depois de apagar.
 
+Em 23/11/2026, no emulador `Medium_Phone`, o toque abriu o calendário em **Deitou**, **Adormeceu** e **Acordou**. A navegação para o mês anterior e a seleção preencheram os três campos. No **Histórico**, o teste selecionou a data inicial no calendário, preencheu a final em **Digitar data** e aplicou o filtro. `npm run typecheck` passou.
+
 Com duas noites fictícias, a Home mostrou a contagem, o período e o atalho para a mais recente. Em uma edição concorrente, o Android exibiu o conflito, consultou a versão atual e salvou a qualidade escolhida no rascunho após confirmação.
 
 Para a verificação de persistência, a API foi reiniciada após criar a noite. A saúde da nova instância retornou `200` e o Android reabriu o registro de `430` minutos pelo histórico. O PostgreSQL permaneceu em execução.

@@ -1,4 +1,4 @@
-import { FinishReason, GoogleGenAI } from '@google/genai';
+import { FinishReason, GoogleGenAI, ThinkingLevel } from '@google/genai';
 import { config } from '../config.js';
 import { cartaoIndisponivel, serializarContexto } from './compose.js';
 import type { ContextoCartao, EsquemaRespostaCartao } from './compose.js';
@@ -34,7 +34,9 @@ export async function gerarIdsNoGemini(
         candidateCount: 1,
         temperature: 0.4,
         maxOutputTokens: 256,
-        thinkingConfig: { thinkingBudget: 0 },
+        thinkingConfig: config.geminiModel === 'gemini-3.1-flash-lite'
+          ? { thinkingLevel: ThinkingLevel.MINIMAL }
+          : { thinkingBudget: 0 },
         abortSignal: sinal,
       },
     });

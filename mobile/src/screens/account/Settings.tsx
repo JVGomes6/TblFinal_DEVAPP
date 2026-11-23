@@ -1,5 +1,6 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useRef, useState } from 'react';
+import type { ComponentRef } from 'react';
 import { AccessibilityInfo, Keyboard, KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
 import type { TextInput } from 'react-native';
 import { BlocoDiario, CampoDiario, OpcoesDiario } from '../../components/DiarioFields';
@@ -42,7 +43,7 @@ export function Settings({ navigation }: NativeStackScreenProps<RootStackParamLi
   const [confirmacao, setConfirmacao] = useState<string>();
   const [confirmacaoConta, setConfirmacaoConta] = useState<string>();
   const [acao, setAcao] = useState<AcaoDaConta | null>(null);
-  const entradaMeta = useRef<TextInput>(null);
+  const entradaMeta = useRef<ComponentRef<typeof TextInput>>(null);
 
   useEffect(() => { setMeta(metaMin === null ? '' : formatarHorario(metaMin)); }, [metaMin]);
 
@@ -139,7 +140,7 @@ function ConfirmacaoDaConta({ acao, fechar, executarAcao, aoConfirmar }: {
   const { paleta } = usePreferences();
   const { executar, erro, ocupado } = useAcaoDaTela();
   const [senha, setSenha] = useState('');
-  const tituloRef = useRef<Text>(null);
+  const tituloRef = useRef<ComponentRef<typeof Text>>(null);
   const { titulo, efeito, confirmar } = confirmacoes[acao];
 
   function confirmarComSenha() {
