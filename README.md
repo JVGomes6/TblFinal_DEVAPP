@@ -75,6 +75,8 @@ Essa divisão separa interface, regras de negócio, persistência e materiais da
 
 ## 4. Execução em ambiente de desenvolvimento
 
+Para executar com o ZIP privado de avaliação, siga o [roteiro do pacote local](docs/entrega-apk.md#execução-do-pacote-local-de-avaliação). O inicializador cria um PostgreSQL isolado e oferece a API por HTTP para desenvolvimento e por HTTPS local para o APK de avaliação. Os passos abaixo mostram como configurar o desenvolvimento sem o ZIP.
+
 **Pré-requisitos:**
 
 - Node.js 22, a partir de 22.13, e npm 10.
@@ -99,7 +101,7 @@ docker run -d --name entrenoites-pg-teste -e POSTGRES_USER=entrenoites -e POSTGR
 
 A senha desse exemplo é fictícia e exclusiva do banco local. Nas sessões seguintes, use `docker start entrenoites-pg-teste` se o container estiver parado. Se já houver PostgreSQL local, crie um banco dedicado e use sua URL na configuração do backend e em `.env.test` ao executar a suíte.
 
-**Backend:** abra outro terminal na raiz do checkout. Se recebeu o ZIP de avaliação, extraia-o na raiz e rode `npm ci`, `npm run build`, `npm run db:init` e `npm start` dentro de `backend`, usando os valores do arquivo privado. Para uma demonstração com o container local, as variáveis da sessão abaixo fornecem a conexão, geram um segredo JWT aleatório e iniciam com o Gemini desativado:
+**Backend:** abra outro terminal na raiz do checkout. Para uma demonstração com o container local, as variáveis da sessão abaixo fornecem a conexão, geram um segredo JWT aleatório e iniciam com o Gemini desativado:
 
 ```powershell
 Set-Location backend
@@ -205,13 +207,12 @@ A [tabela de divisão do trabalho](docs/contribuicoes.md#divisão-definitiva-da-
 
 ## Arquivos privados da entrega
 
-O ZIP privado deve preservar estes caminhos a partir de sua raiz, para que os arquivos sejam extraídos nos diretórios corretos:
+Extraia o ZIP privado na raiz do repositório para preservar estes caminhos:
 
 ```text
-backend/
-└── .env
-mobile/
-└── .env
+backend/.env
+mobile/.env
+avaliacao/
 ```
 
-Os arquivos `.env`, as chaves e as credenciais **não devem ir ao GitHub**. Prepare o ZIP fora do Git, com credenciais dedicadas e revogáveis, e compartilhe-o somente pelo canal privado autorizado para a avaliação. O procedimento de montagem e conferência está no [roteiro de entrega e ZIP privado](docs/entrega-apk.md#zip-privado).
+A pasta `avaliacao/` contém o inicializador, o guia rápido, a configuração TLS local e, na versão completa, o APK de teste. Compartilhe o ZIP somente pela tarefa privada de avaliação. [Instruções do pacote](docs/entrega-apk.md#execução-do-pacote-local-de-avaliação)

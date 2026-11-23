@@ -61,12 +61,45 @@ try { $arquivo.Entries.FullName } finally { $arquivo.Dispose() }
 
 Execute `npm ci`, `npm run build`, `npm run db:init` e `npm start` no backend. Verifique `/v1/health`, execute o app e registre os resultados. Confira que o Git ignora os arquivos privados.
 
+## Execução do pacote local de avaliação
+
+Use Windows x64 com Git, Node 22 a partir de 22.13, npm 10, Android Studio e Android SDK. Clone o repositório em um caminho curto e extraia o ZIP na raiz do checkout. O arquivo `avaliacao/LEIA-ME.txt` traz os mesmos passos para consulta durante a instalação.
+
+```powershell
+git clone https://github.com/JVGomes6/TblFinal_DEVAPP.git C:\src\entrenoites-avaliacao
+Set-Location C:\src\entrenoites-avaliacao
+# Extraia o ZIP nesta pasta antes de prosseguir.
+npm.cmd --prefix backend ci
+npm.cmd --prefix backend run build
+npm.cmd --prefix avaliacao ci
+node avaliacao/iniciar.mjs
+```
+
+O inicializador cria um PostgreSQL 18.6 local com banco vazio e persiste os registros em `avaliacao/dados-postgres`. Use contas e registros fictícios. Mantenha o terminal aberto durante o teste. A API de desenvolvimento usa a porta 3336, a API HTTPS local usa a 3443 e o banco usa a 55433.
+
+### Instalar o APK de avaliação
+
+Abra o emulador Android ou conecte por USB um aparelho Android com depuração ativada. Na raiz do checkout, em outro PowerShell:
+
+```powershell
+$adb = "$env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe"
+& $adb devices
+& $adb reverse tcp:3443 tcp:3443
+& $adb install -r .\avaliacao\EntreNoites-Avaliacao.apk
+```
+
+Abra **EntreNoites Avaliação**. A edição local usa um bundle de release, assinatura Android de teste e o pacote `br.edu.appsono.entrenoites.avaliacao`. A conexão com o backend é feita por HTTPS em `localhost` via ADB. O certificado é confiado somente nessa edição do app, e o Metro pode ficar desligado. Se houver mais de um dispositivo, acrescente `-s <id-do-dispositivo>` após `$adb` nos comandos de instalação e redirecionamento.
+
+### Executar pelo código-fonte
+
+Com o inicializador e o emulador abertos, execute os comandos da seção **Mobile** do README. O `mobile/.env` incluído no ZIP aponta para `http://10.0.2.2:3336/v1`. A prévia da reflexão usa dados locais, e a geração do cartão requer acesso ao Gemini a partir do backend. [Execução do mobile](../README.md#4-execução-em-ambiente-de-desenvolvimento)
+
 ## Resultados e pendências
 
 | Verificação | Resultado |
 | --- | --- |
 | Cópia limpa | A cópia dos arquivos candidatos à entrega passou em `npm ci` nos dois projetos, build do backend, typecheck do mobile e verificação de dependências Expo. Uma repetição independente por colega segue pendente. |
-| ZIP fictício | A extração em cópia limpa conferiu os dois caminhos. `db:init` e a API iniciaram com o `.env` extraído. A API respondeu `200` em `GET /v1/health`. O ZIP final aguarda credenciais dedicadas e infraestrutura da equipe. |
+| ZIP fictício inicial | A extração em cópia limpa conferiu os dois caminhos. `db:init` e a API iniciaram com o `.env` extraído. A API respondeu `200` em `GET /v1/health`. O ambiente hospedado de avaliação depende da infraestrutura da equipe. |
 | Git e segredos | Gitleaks `8.30.1` reportou zero ocorrências nos dois commits de todos os refs locais e na cópia dos arquivos candidatos à entrega. `git check-ignore` confirmou os dois `.env`, `mobile/credentials.json` e o ZIP. O endereço público retornou HTTP `200` em consulta sem autenticação. |
 | Configuração EAS | CLI `16.32.0` executada. O validador local aceitou `https://avaliacao.example.invalid/v1` e recusou URL HTTP do emulador, HTTPS em loopback e variável ausente. `eas config --platform android --profile production-apk --non-interactive --json` exigiu uma conta Expo. |
 | Build local de teste | `:app:assembleRelease -PreactNativeArchitectures=x86_64` passou com Gradle `8.14.3` e JDK `17.0.21+9` em caminho curto. No caminho do OneDrive, o CMake encontrou o limite de 260 caracteres. `aapt` confirmou nome, `1.0.0`, código `1` e pacote esperado. `apksigner` validou a assinatura v2 da chave Android Debug. O bundle incluiu a URL HTTPS fictícia. |
@@ -75,6 +108,14 @@ Execute `npm ci`, `npm run build`, `npm run db:init` e `npm start` no backend. V
 | API e demonstração de avaliação | Endpoint HTTPS real pendente. Persistência, cartão real e PDF offline no APK de avaliação dependem da infraestrutura autorizada. A configuração SQLite/Ollama pedida para avaliação também aguarda confirmação da equipe. O PDF offline foi reproduzido separadamente no development build. [Ensaio funcional](verificacao.md#percursos-de-ponta-a-ponta) |
 
 O APK local de teste tem SHA-256 `4c6f07e0d80d51b1239e4da8638cf95bd406699a3019afad0d3d3b0da88804ba`. A impressão digital SHA-256 do certificado de testes é `fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c`.
+
+### Ensaio do pacote local de 23/11/2026
+
+- Em uma cópia limpa do código, o inicializador do ZIP preparou o PostgreSQL 18.6 e respondeu a `GET /v1/health` por HTTPS com o certificado local. Os 15 testes do backend passaram, incluindo autorização, persistência, isolamento e geração com o transporte Gemini simulado.
+- O Gradle 9.4.1 gerou o APK de avaliação com JBR 25 para `x86_64` e `arm64-v8a`. A assinatura Android de teste foi verificada. No emulador `x86_64`, o APK abriu com o bundle embarcado, autenticou uma conta fictícia e exibiu a noite de 430 minutos após fechar e reabrir. Também conferimos o botão **Confirmar e voltar** e salvamos um PDF com os dados dessa noite.
+- No ensaio com o provedor real, a prévia respondeu `200` e a geração do cartão respondeu `503 CARTAO_INDISPONIVEL`. O APK assinado pela equipe e o endpoint hospedado continuam pendentes.
+
+O arquivo `EntreNoites-Avaliacao.apk` desse pacote tem SHA-256 `c9d02399cb2e38125c5d7adbc716defc9172f72fafa202ea59bfb08db2328439`.
 
 Para repetir a verificação de segredos, use Gitleaks `8.30.1` no repositório e em uma cópia dos arquivos listados por `git ls-files --cached --others --exclude-standard` que serão incluídos na entrega.
 

@@ -10,7 +10,7 @@ Diário autorrelatado com conta, consentimento, histórico, métricas de sono, e
 | --- | --- |
 | Ensaio | Node 22.23.5, npm 10.9.11, PostgreSQL 18.6 local |
 | App | Expo 58.0.26, React 19.3.0, React Native 0.88.1 |
-| PDF | expo-print 15.0.8, expo-file-system 19.0.24 e expo-sharing 14.0.8 |
+| PDF | expo-print 58.0.9, expo-file-system 58.0.14 e expo-sharing 58.0.23 |
 | API | Express 5.3.0, pg 8.23.1, zod 4.6.7 |
 | Autenticação | bcryptjs 3.0.3, jose 6.2.18 |
 | Reflexão | @google/genai 1.52.0, modelo padrão `gemini-3.1-flash-lite`, catálogo `cartao-1` |

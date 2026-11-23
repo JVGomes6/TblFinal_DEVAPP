@@ -1,7 +1,8 @@
 /.env
 /.env.*
 !/.env.example
-**/ambiente-app-sono.zip
+**/ambiente-app-sono*.zip
+/avaliacao/
 **/credentials.json
 *.jks
 *.keystore
